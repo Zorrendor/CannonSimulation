@@ -11,9 +11,8 @@ public class Collidable : MonoBehaviour
     public BoxCollider BoxCollider { get; private set;}
     
     private float lastCollisionTime;
-    private float collisionCooldown = 0.1f;
-
-    private int frameCounter = 0;
+    
+    private const float CollisionCooldown = 0.1f;
     
     private void Awake()
     {
@@ -30,19 +29,13 @@ public class Collidable : MonoBehaviour
     {
         CollisionManager.Instance.UnregisterCollidable(this);
     }
-    
-    void Update()
-    {
-        frameCounter++;
-    }
 
     public void OnCollide(BoxCollider collider)
     {
-        if (Time.time - lastCollisionTime < collisionCooldown) return;
+        if (Time.time - lastCollisionTime < CollisionCooldown) return;
         
         lastCollisionTime = Time.time;
         onCollide?.Invoke(collider);
-        frameCounter = 0;
     }
 
 
