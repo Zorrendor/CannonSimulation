@@ -84,6 +84,6 @@ public class CannonBulletsManager : MonoBehaviour
         {
             bulletPool.Release(bullet);    
         }
-        bulletPool.Clear();
+        bulletsToRelease.Clear();
     }
 }
