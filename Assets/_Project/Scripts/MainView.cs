@@ -18,18 +18,25 @@ public class MainView : MonoBehaviour
 
     private void OnEnable()
     {
+        powerSlider.onValueChanged.AddListener(OnPowerSliderValueChanged);
         cannonConfig.power.AddListener(OnPowerChange);
     }
 
     private void OnDisable()
     {
+        powerSlider.onValueChanged.RemoveListener(OnPowerSliderValueChanged);
         cannonConfig.power.RemoveListener(OnPowerChange);
     }
     
     private void OnPowerChange(float value)
     {
         int intValue = Mathf.RoundToInt(value);
-        powerSlider.value = value;
+        powerSlider.SetValueWithoutNotify(value);
         powerText.text = intValue.ToString();
+    }
+    
+    private void OnPowerSliderValueChanged(float newValue)
+    {
+        cannonConfig.power.Value = newValue;
     }
 }
