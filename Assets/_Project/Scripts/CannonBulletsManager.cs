@@ -62,6 +62,7 @@ public class CannonBulletsManager : MonoBehaviour
         {
             var explosion = particlesPool.Get();
             explosion.transform.position = bullet.transform.position;
+            explosion.transform.up = bullet.HitNormal;
             explosion.Play(true);
 
             this.StartCoroutine(ReturnToPoolExplosionRoutine(explosion));

@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float destructionTime = 10f;
 
     public bool ShouldSpawnParticles => ricochetCount == 2;
+    public Vector3 HitNormal { get; private set; }
     
     private Vector3 velocity;
     private int ricochetCount = 0;
@@ -43,16 +44,17 @@ public class Bullet : MonoBehaviour
 
     public void OnCollide(BoxCollider collider)
     {
+        Vector3 closestPoint = collider.ClosestPoint(transform.position);
+        HitNormal = (transform.position - closestPoint).normalized;
+        
         ricochetCount++;
         if (ricochetCount >= 2)
         {
             onDestroyBullet?.Invoke(this);
-            return;
         }
-        
-        Vector3 closestPoint = collider.ClosestPoint(transform.position);
-        Vector3 normal = (transform.position - closestPoint).normalized;
-        
-        velocity = Vector3.Reflect(velocity, normal) * energyLossFactor;
+        else
+        {
+            velocity = Vector3.Reflect(velocity, HitNormal) * energyLossFactor;
+        }
     }
 }
